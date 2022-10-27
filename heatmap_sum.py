@@ -11,13 +11,13 @@ for filename in os.listdir('csv'):
         # Filter only desired files type
         if (f.endswith('.csv')):
             newFilesList.append(f)
-
+print("Found " + str(len(newFilesList)) + " files")
 firstFile = True
 dbSumAry = []
-
+progressCnt = 1
 for listRow in newFilesList:
     # Process each file from input list
-    print("Opening file: " + str(listRow))
+    print("[" + str(progressCnt) + "/" + str(len(newFilesList)) + "] " + " Opening file: " + str(listRow))
     # Trying to detect input encoding
     inputFile =  open(listRow, "rt", errors="replace")
     lineCnt = 0
@@ -43,6 +43,7 @@ for listRow in newFilesList:
         #print("dbSumAry Columns: " + str(len(dbSumAry[0])))
     #print(dbSumAry)
     firstFile = False
+    progressCnt += 1
 
 print("Writing CSV file...")
 # Write output to CSV
