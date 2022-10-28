@@ -46,6 +46,7 @@ progressCnt = 0
 outFile = []
 
 for listRow in newFilesList:
+    progressCnt += 1
     print("[" + str(progressCnt) + "/" + str(len(newFilesList)) + "] " + " Opening file: " + str(listRow))
     for line in open(listRow):
         line = line.strip().split(', ')
