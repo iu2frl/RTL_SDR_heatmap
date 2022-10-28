@@ -4,6 +4,7 @@ import sys
 from collections import defaultdict
 import os.path
 import csv
+import math
 
 # todo
 # interval based summary
@@ -48,6 +49,8 @@ for listRow in newFilesList:
     print("[" + str(progressCnt) + "/" + str(len(newFilesList)) + "] " + " Opening file: " + str(listRow))
     for line in open(listRow):
         line = line.strip().split(', ')
+        date = str(line[0])
+        time = str(line[1])
         low = int(line[2])
         high = int(line[3])
         step = float(line[4])
@@ -62,18 +65,25 @@ for listRow in newFilesList:
         ave[f] = sums[f] / counts[f]
 
     # Reconstruct original file format
-    outRow = ["2022-08-14", "00:18:07", "430000000", "432000000", "976.56", "160"]
+    lowRow = ["2022-08-14", "00:18:07", "430000000", "432000000", "976.56", "160"]
+    highRow = ["2022-08-14", "00:18:07", "432000000", "434000000", "976.56", "160"]
+    lowRow[0] = date
+    highRow[0] = date
+    lowRow[1] = time
+    highRow[1] = time
+    lastVal = -30.0
     for f in sorted(ave):
-        if (float(f)<432.1):
-            outRow[2] = "430000000"
-            outRow[3] = "432000000"
+        if (math.isnan(ave[f])):
+            ave[f] = str(lastVal)
         else:
-            outRow[2] = "432000000"
-            outRow[3] = "434000000"
-        outRow.append(str(round(ave[f],2)))
-        outFile.append(outRow)
-        #print(outRow)
+            lastVal = float(ave[f])
+        if (float(f)>=432000000.0):
+            highRow.append(str(round(float(ave[f]),2)))
+        else:
+            lowRow.append(str(round(float(ave[f]),2)))
         #print(str(f) + "," + str(ave[f]))
+    outFile.append(lowRow)
+    outFile.append(highRow)
     
 print("Writing CSV file...")
 # Write output to CSV
