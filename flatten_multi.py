@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-
 import sys
 from collections import defaultdict
 import os.path
@@ -12,10 +11,10 @@ import math
 
 def help():
     print("flatten.py")
-    print("turns any rtl_power csv into a more compact summary")
+    print("turns any rtl_power csv file from a folder into a more compact summary")
     sys.exit()
 
-if len(sys.argv) > 1:
+if len(sys.argv) >= 1:
     help()
 
 #path = sys.argv[1]
@@ -88,7 +87,7 @@ for listRow in newFilesList:
     
 print("Writing CSV file...")
 # Write output to CSV
-csvFile =  open("output3.csv", "w", newline='')
+csvFile =  open("FlatternAverage.csv", "w", newline='')
 # create the csv writer
 writer = csv.writer(csvFile)
 #for row in dbSumAry:
